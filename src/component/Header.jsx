@@ -29,15 +29,28 @@ const Header = () => {
   const linkClass = ({ isActive }) =>
     `uppercase text-sm tracking-[2px] font-semibold transition ${
       isActive
-        ? "text-[#8C5631]"
-        : "text-[#4E2D20] hover:text-[#B77466]"
+        ? "text-accent"
+        : "text-primary hover:text-hover"
     }`;
+
+
+    const dropdownLinkClass = ({ isActive }) =>
+  `block px-6 py-3 transition ${
+    isActive
+      ? "text-accent font-semibold"
+      : "text-primary hover:text-hover"
+  }`;
+
+
+
+
+
 
   return (
     <>
-      <header className="sticky top-0 z-50 bg-[#F9F8F6]/95 backdrop-blur-md border-b border-[#E8D8C8]">
+      <header className="sticky top-0 z-50 bg-light-bg/95 backdrop-blur-md border-b border-border">
 
-        <div className="max-w-7xl mx-auto px-5 lg:px-10 py-4 flex items-center justify-between">
+        <div className=" px-5 lg:px-10 py-4 flex items-center justify-between">
 
           {/* Logo */}
           <NavLink to="/">
@@ -68,7 +81,7 @@ const Header = () => {
 
               <button
                 onClick={() => setShowTools(!showTools)}
-                className="flex items-center gap-2 uppercase text-sm tracking-[2px] font-semibold text-[#4E2D20] hover:text-[#B77466]"
+                className="flex items-center gap-2 uppercase text-sm tracking-[2px] font-semibold text-primary hover:text-hover"
               >
                 Tools
 
@@ -82,12 +95,12 @@ const Header = () => {
 
               {showTools && (
 
-                <div className="absolute top-full left-0 w-60 mt-5 bg-[#EFE9E3] shadow-xl py-3 z-50">
+                <div className="absolute top-full left-0 w-60 mt-5 bg-light-bg/95 shadow-xl py-3 z-50">
 
                   <NavLink
                     to="/tools/recipe-scaler"
                     onClick={() => setShowTools(false)}
-                    className="block px-6 py-3 text-[#4E2D20] hover:text-[#B77466]"
+                    className={dropdownLinkClass}
                   >
                     Recipe Scaler
                   </NavLink>
@@ -95,7 +108,7 @@ const Header = () => {
                   <NavLink
                     to="/tools/measurement-converter"
                     onClick={() => setShowTools(false)}
-                    className="block px-6 py-3 text-[#4E2D20] hover:text-[#B77466]"
+                    className={dropdownLinkClass}
                   >
                     Measurement Converter
                   </NavLink>
@@ -103,7 +116,7 @@ const Header = () => {
                   <NavLink
                     to="/tools/pantry-substitutions"
                     onClick={() => setShowTools(false)}
-                    className="block px-6 py-3 text-[#4E2D20] hover:text-[#B77466]"
+                    className={dropdownLinkClass}
                   >
                     Pantry Substitutions
                   </NavLink>
@@ -129,12 +142,12 @@ const Header = () => {
                 onClick={() => setShowSearch(true)}
                 className="w-11 h-11 flex items-center justify-center"
               >
-                <FaSearch className="text-[#4E2D20]" />
+                <FaSearch className="text-primary" />
               </button>
 
             ) : (
 
-              <div className="flex items-center w-72 bg-white rounded-full border border-[#E8D8C8] px-4 py-2">
+              <div className="flex items-center w-72 bg-white rounded-full border border-border px-4 py-2">
 
                 <FaSearch className="text-gray-400" />
 
@@ -152,7 +165,7 @@ const Header = () => {
 
             )}
 
-            <button className="bg-[#4E2D20] hover:bg-[#8C5631] text-white rounded-full px-6 py-2 font-semibold transition">
+            <button className="bg-primary hover:bg-accent text-white rounded-full px-6 py-2 font-semibold transition">
               Get Started
             </button>
 
@@ -162,7 +175,7 @@ const Header = () => {
 
           <button
             onClick={() => setMobileMenu(true)}
-            className="lg:hidden text-2xl text-[#4E2D20]"
+            className="lg:hidden text-2xl text-primary"
           >
             <FaBars />
           </button>
@@ -187,7 +200,7 @@ const Header = () => {
 
       <aside
         className={`fixed top-0 right-0 h-screen w-80 max-w-[85vw]
-        bg-[#F9F8F6] shadow-2xl z-50
+        bg-light-bg shadow-2xl z-50
         transition-transform duration-300 ease-in-out
         ${
           mobileMenu
@@ -203,7 +216,7 @@ const Header = () => {
 
           <button
             onClick={() => setMobileMenu(false)}
-            className="text-2xl text-[#4E2D20]"
+            className="text-2xl text-primary"
           >
             <FaTimes />
           </button>
@@ -217,7 +230,7 @@ const Header = () => {
           <NavLink
             to="/"
             onClick={() => setMobileMenu(false)}
-            className="px-6 py-4 hover:bg-[#F4ECE4]"
+            className="px-6 py-4 hover:bg-hover"
           >
             Recipes
           </NavLink>
@@ -225,7 +238,7 @@ const Header = () => {
           <NavLink
             to="/collection"
             onClick={() => setMobileMenu(false)}
-            className="px-6 py-4 hover:bg-[#F4ECE4]"
+            className="px-6 py-4 "
           >
             Collection
           </NavLink>
@@ -233,7 +246,7 @@ const Header = () => {
           <NavLink
             to="/journal"
             onClick={() => setMobileMenu(false)}
-            className="px-6 py-4 hover:bg-[#F4ECE4]"
+            className="px-6 py-4 hover:bg-hover"
           >
             Journal
           </NavLink>
@@ -241,7 +254,7 @@ const Header = () => {
           <NavLink
             to="/tools"
             onClick={() => setMobileMenu(false)}
-            className="px-6 py-4 hover:bg-[#F4ECE4]"
+            className="px-6 py-4 hover:bg-hover"
           >
             Tools
           </NavLink>
@@ -249,14 +262,14 @@ const Header = () => {
           <NavLink
             to="/about"
             onClick={() => setMobileMenu(false)}
-            className="px-6 py-4 hover:bg-[#F4ECE4]"
+            className="px-6 py-4 hover:bg-hover"
           >
             About
           </NavLink>
 
           <div className="p-6">
 
-            <div className="flex items-center bg-white rounded-full border border-[#E8D8C8] px-4 py-3">
+            <div className="flex items-center bg-white rounded-full border border-border px-4 py-3">
 
               <FaSearch className="text-gray-400" />
 
@@ -267,7 +280,7 @@ const Header = () => {
 
             </div>
 
-            <button className="mt-5 w-full rounded-full bg-[#4E2D20] hover:bg-[#8C5631] text-white py-3 font-semibold transition">
+            <button className="mt-5 w-full rounded-full bg-primary hover:bg-hover text-white py-3 font-semibold transition">
               Get Started
             </button>
 

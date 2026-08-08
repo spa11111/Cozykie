@@ -7,7 +7,7 @@ const UserLayout = ({ children }) => {
       <Header />
 
       <main className="min-h-screen  bg-[#F9F8F6]">
-        <div className="max-w-7xl mx-auto px-6 lg:px-10 py-16">
+        <div>
           {children}
         </div>
       </main>
