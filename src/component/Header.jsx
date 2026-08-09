@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import logo from "../assets/images/logo.png";
 
 import {
@@ -10,6 +10,7 @@ import {
 } from "react-icons/fa";
 
 const Header = () => {
+  const navigate = useNavigate()
   const [showSearch, setShowSearch] = useState(false);
   const [mobileMenu, setMobileMenu] = useState(false);
   const [showTools, setShowTools] = useState(false);
@@ -50,7 +51,7 @@ const Header = () => {
     <>
       <header className="sticky top-0 z-50 bg-light-bg/95 backdrop-blur-md border-b border-border">
 
-        <div className=" px-5 lg:px-10 py-4 flex items-center justify-between">
+        <div className="px-32 py-4 flex items-center justify-between">
 
           {/* Logo */}
           <NavLink to="/">
@@ -98,7 +99,7 @@ const Header = () => {
                 <div className="absolute top-full left-0 w-60 mt-5 bg-light-bg/95 shadow-xl py-3 z-50">
 
                   <NavLink
-                    to="/tools/recipe-scaler"
+                    to="/tools/scaler"
                     onClick={() => setShowTools(false)}
                     className={dropdownLinkClass}
                   >
@@ -106,7 +107,7 @@ const Header = () => {
                   </NavLink>
 
                   <NavLink
-                    to="/tools/measurement-converter"
+                    to="/tools/converter"
                     onClick={() => setShowTools(false)}
                     className={dropdownLinkClass}
                   >
@@ -114,7 +115,7 @@ const Header = () => {
                   </NavLink>
 
                   <NavLink
-                    to="/tools/pantry-substitutions"
+                    to="/tools/substitution"
                     onClick={() => setShowTools(false)}
                     className={dropdownLinkClass}
                   >
@@ -165,7 +166,7 @@ const Header = () => {
 
             )}
 
-            <button className="bg-primary hover:bg-accent text-white rounded-full px-6 py-2 font-semibold transition">
+            <button onClick={() => navigate('/create')} className="bg-primary hover:bg-accent text-white rounded-full px-6 py-2 font-semibold transition">
               Get Started
             </button>
 

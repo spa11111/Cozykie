@@ -6,7 +6,7 @@ const UserLayout = ({ children }) => {
     <>
       <Header />
 
-      <main className="min-h-screen  bg-[#F9F8F6]">
+      <main className="min-h-screen  bg-light-bg">
         <div>
           {children}
         </div>

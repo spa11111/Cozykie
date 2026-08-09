@@ -14,7 +14,7 @@ const Footer = () => {
 
   return (
     <footer className="bg-dark-bg">
-      <div className="px-6 sm:px-8 lg:px-10 py-10 md:py-14">
+      <div className="px-32 py-10 md:py-14">
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-[1.25fr_1fr_1fr_1fr] gap-8 lg:gap-8">
 
           {/* Brand */}
