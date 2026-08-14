@@ -7,13 +7,22 @@ import {
   FaTimes,
   FaBars,
   FaChevronDown,
+  FaUser,
 } from "react-icons/fa";
 
 const Header = () => {
-  const navigate = useNavigate()
+  const navigate = useNavigate();
+
   const [showSearch, setShowSearch] = useState(false);
   const [mobileMenu, setMobileMenu] = useState(false);
   const [showTools, setShowTools] = useState(false);
+  const [showProfile, setShowProfile] = useState(false);
+
+  // Check whether user is logged in
+  const [user, setUser] = useState(() => {
+    const savedUser = localStorage.getItem("cozykieUser");
+    return savedUser ? JSON.parse(savedUser) : null;
+  });
 
   useEffect(() => {
     if (mobileMenu) {
@@ -27,6 +36,29 @@ const Header = () => {
     };
   }, [mobileMenu]);
 
+  useEffect(() => {
+    const handleAuthChange = () => {
+      const savedUser = localStorage.getItem("cozykieUser");
+
+      setUser(savedUser ? JSON.parse(savedUser) : null);
+    };
+
+    window.addEventListener("cozykieAuthChange", handleAuthChange);
+
+    return () => {
+      window.removeEventListener("cozykieAuthChange", handleAuthChange);
+    };
+  }, []);
+
+  const handleLogout = () => {
+    localStorage.removeItem("cozykieUser");
+
+    setUser(null);
+    setShowProfile(false);
+
+    navigate("/");
+  };
+
   const linkClass = ({ isActive }) =>
     `uppercase text-sm tracking-[2px] font-semibold transition ${
       isActive
@@ -34,52 +66,44 @@ const Header = () => {
         : "text-primary hover:text-hover"
     }`;
 
-
-    const dropdownLinkClass = ({ isActive }) =>
-  `block px-6 py-3 transition ${
-    isActive
-      ? "text-accent font-semibold"
-      : "text-primary hover:text-hover"
-  }`;
-
-
-
-
-
+  const dropdownLinkClass = ({ isActive }) =>
+    `block px-6 py-3 transition ${
+      isActive
+        ? "text-accent font-semibold"
+        : "text-primary hover:text-hover"
+    }`;
 
   return (
     <>
-      <header className="sticky top-0 z-50 bg-light-bg/95 backdrop-blur-md border-b border-border">
-
-        <div className="px-32 py-4 flex items-center justify-between">
+      <header className="sticky top-0 z-50 border-b border-border bg-light-bg/95 backdrop-blur-md">
+        <div className="flex items-center justify-between px-6 py-4 sm:px-10 lg:px-16 xl:px-24 2xl:px-32">
 
           {/* Logo */}
           <NavLink to="/">
             <img
               src={logo}
               alt="Cozykie"
-              className="w-16 sm:w-20 object-contain"
+              className="w-16 object-contain sm:w-20"
             />
           </NavLink>
 
           {/* Desktop Navigation */}
-          <nav className="hidden lg:flex flex-1 justify-center items-center gap-12">
+          <nav className="hidden flex-1 items-center justify-center gap-7 lg:flex xl:gap-10 2xl:gap-12">
 
             <NavLink to="/" end className={linkClass}>
-              Recipes
+              Home
             </NavLink>
 
-            <NavLink to="/collection" className={linkClass}>
-              Collection
-            </NavLink>
+<NavLink to="/collections" className={linkClass}>
+  Collection
+</NavLink>
 
-            <NavLink to="/journal" className={linkClass}>
-              Journal
-            </NavLink>
+<NavLink to="/recipes" className={linkClass}>
+  Recipes
+</NavLink>
 
             {/* Tools Dropdown */}
             <div className="relative">
-
               <button
                 onClick={() => setShowTools(!showTools)}
                 className="flex items-center gap-2 uppercase text-sm tracking-[2px] font-semibold text-primary hover:text-hover"
@@ -91,13 +115,10 @@ const Header = () => {
                     showTools ? "rotate-180" : ""
                   }`}
                 />
-
               </button>
 
               {showTools && (
-
-                <div className="absolute top-full left-0 w-60 mt-5 bg-light-bg/95 shadow-xl py-3 z-50">
-
+                <div className="absolute left-0 top-full z-50 mt-5 w-60 bg-light-bg/95 py-3 shadow-xl">
                   <NavLink
                     to="/tools/scaler"
                     onClick={() => setShowTools(false)}
@@ -121,128 +142,130 @@ const Header = () => {
                   >
                     Pantry Substitutions
                   </NavLink>
-
                 </div>
-
               )}
-
             </div>
 
             <NavLink to="/about" className={linkClass}>
               About
             </NavLink>
-
           </nav>
 
           {/* Desktop Right */}
-          <div className="hidden lg:flex items-center gap-4">
+          <div className="hidden items-center gap-3 lg:flex xl:gap-4">
 
+            {/* Search */}
             {!showSearch ? (
-
               <button
                 onClick={() => setShowSearch(true)}
-                className="w-11 h-11 flex items-center justify-center"
+                className="flex h-11 w-11 items-center justify-center"
               >
                 <FaSearch className="text-primary" />
               </button>
-
             ) : (
-
-              <div className="flex items-center w-72 bg-white rounded-full border border-border px-4 py-2">
-
+              <div className="flex w-56 items-center rounded-full border border-border bg-white px-4 py-2 xl:w-72">
                 <FaSearch className="text-gray-400" />
 
                 <input
                   autoFocus
                   placeholder="Search recipes..."
-                  className="flex-1 bg-transparent outline-none px-3 text-sm"
+                  className="flex-1 bg-transparent px-3 text-sm outline-none"
                 />
 
                 <button onClick={() => setShowSearch(false)}>
                   <FaTimes />
                 </button>
-
               </div>
-
             )}
 
-            <button onClick={() => navigate('/create')} className="bg-primary hover:bg-accent text-white rounded-full px-6 py-2 font-semibold transition">
-              Get Started
-            </button>
+            {/* Authentication */}
+            {!user ? (
+              <button
+                onClick={() => navigate("/login")}
+                className="rounded-full bg-primary px-5 py-2 font-semibold text-white transition hover:bg-accent xl:px-6"
+              >
+                Get Started
+              </button>
+            ) : (
+              <div className="relative">
+                <button
+                  onClick={() => setShowProfile(!showProfile)}
+                  className="flex h-11 w-11 items-center justify-center rounded-full bg-primary text-white transition hover:bg-accent"
+                >
+                  <FaUser className="text-sm" />
+                </button>
 
+                {showProfile && (
+                  <div className="absolute right-0 top-full mt-4 w-48 border border-border bg-light-bg py-2 shadow-xl">
+                    <div className="border-b border-border px-5 py-3">
+                      <p className="text-sm font-semibold text-primary">
+                        {user.name || "Baker"}
+                      </p>
+
+                      <p className="mt-1 truncate text-xs text-text">
+                        {user.email}
+                      </p>
+                    </div>
+
+                    <button
+                      onClick={handleLogout}
+                      className="w-full px-5 py-3 text-left text-sm text-primary transition hover:bg-hover"
+                    >
+                      Logout
+                    </button>
+                  </div>
+                )}
+              </div>
+            )}
           </div>
 
           {/* Mobile Menu Button */}
-
           <button
             onClick={() => setMobileMenu(true)}
-            className="lg:hidden text-2xl text-primary"
+            className="text-2xl text-primary lg:hidden"
           >
             <FaBars />
           </button>
-
         </div>
-
       </header>
 
       {/* Overlay */}
-
       <div
         onClick={() => setMobileMenu(false)}
-        className={`fixed inset-0 bg-black/40 z-40 transition-all duration-300 lg:hidden
-        ${
+        className={`fixed inset-0 z-40 bg-black/40 transition-all duration-300 lg:hidden ${
           mobileMenu
-            ? "opacity-100 visible"
-            : "opacity-0 invisible"
+            ? "visible opacity-100"
+            : "invisible opacity-0"
         }`}
       />
 
       {/* Drawer */}
-
       <aside
-        className={`fixed top-0 right-0 h-screen w-80 max-w-[85vw]
-        bg-light-bg shadow-2xl z-50
-        transition-transform duration-300 ease-in-out
-        ${
+        className={`fixed right-0 top-0 z-50 h-screen w-80 max-w-[85vw] bg-light-bg shadow-2xl transition-transform duration-300 ease-in-out lg:hidden ${
           mobileMenu
             ? "translate-x-0"
             : "translate-x-full"
-        }
-        lg:hidden`}
+        }`}
       >
-
         {/* Header */}
-
         <div className="flex items-center px-6 py-5">
-
           <button
             onClick={() => setMobileMenu(false)}
             className="text-2xl text-primary"
           >
             <FaTimes />
           </button>
-
         </div>
 
         {/* Links */}
-
         <nav className="flex flex-col py-4">
+          <NavLink to="/recipes" onClick={() => setMobileMenu(false)} className="px-6 py-4 hover:bg-hover">
+  Recipes
+</NavLink>
 
-          <NavLink
-            to="/"
-            onClick={() => setMobileMenu(false)}
-            className="px-6 py-4 hover:bg-hover"
-          >
-            Recipes
-          </NavLink>
-
-          <NavLink
-            to="/collection"
-            onClick={() => setMobileMenu(false)}
-            className="px-6 py-4 "
-          >
-            Collection
-          </NavLink>
+<NavLink to="/collections" onClick={() => setMobileMenu(false)} className="px-6 py-4">
+  Collection
+</NavLink>
 
           <NavLink
             to="/journal"
@@ -270,25 +293,58 @@ const Header = () => {
 
           <div className="p-6">
 
-            <div className="flex items-center bg-white rounded-full border border-border px-4 py-3">
-
+            {/* Mobile Search */}
+            <div className="flex items-center rounded-full border border-border bg-white px-4 py-3">
               <FaSearch className="text-gray-400" />
 
               <input
                 placeholder="Search..."
-                className="flex-1 bg-transparent outline-none px-3 text-sm"
+                className="flex-1 bg-transparent px-3 text-sm outline-none"
               />
-
             </div>
 
-            <button className="mt-5 w-full rounded-full bg-primary hover:bg-hover text-white py-3 font-semibold transition">
-              Get Started
-            </button>
+            {/* Mobile Authentication */}
+            {!user ? (
+              <button
+                onClick={() => {
+                  setMobileMenu(false);
+                  navigate("/login");
+                }}
+                className="mt-5 w-full rounded-full bg-primary py-3 font-semibold text-white transition hover:bg-hover"
+              >
+                Get Started
+              </button>
+            ) : (
+              <div className="mt-5">
+                <div className="mb-4 flex items-center gap-3">
+                  <div className="flex h-10 w-10 items-center justify-center rounded-full bg-primary text-white">
+                    <FaUser className="text-sm" />
+                  </div>
 
+                  <div className="min-w-0">
+                    <p className="text-sm font-semibold text-primary">
+                      {user.name || "Baker"}
+                    </p>
+
+                    <p className="truncate text-xs text-text">
+                      {user.email}
+                    </p>
+                  </div>
+                </div>
+
+                <button
+                  onClick={() => {
+                    setMobileMenu(false);
+                    handleLogout();
+                  }}
+                  className="w-full rounded-full border border-primary py-3 font-semibold text-primary transition hover:bg-primary hover:text-white"
+                >
+                  Logout
+                </button>
+              </div>
+            )}
           </div>
-
         </nav>
-
       </aside>
     </>
   );

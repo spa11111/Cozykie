@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import { FiUser, FiMail, FiLock, FiEye, FiEyeOff } from "react-icons/fi";
 import AuthLayout from "../../layout/AuthLayout";
 
@@ -9,6 +9,7 @@ const heading = {
 };
 
 const Signup = () => {
+  const navigate = useNavigate();
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [agreedToTerms, setAgreedToTerms] = useState(false);
@@ -23,10 +24,67 @@ const Signup = () => {
     setFormData((prev) => ({ ...prev, [e.target.name]: e.target.value }));
   };
 
+
   const handleSubmit = (e) => {
     e.preventDefault();
-    // handle signup
+
+    // Check if passwords match
+    if (formData.password !== formData.confirmPassword) {
+      alert("Passwords do not match.");
+      return;
+    }
+
+    // Get existing users
+    const users = JSON.parse(
+      localStorage.getItem("cozykieUsers") || "[]"
+    );
+
+    // Check if email is already registered
+    const existingUser = users.find(
+      (user) => user.email.toLowerCase() === formData.email.toLowerCase()
+    );
+
+    if (existingUser) {
+      alert("An account with this email already exists.");
+      return;
+    }
+
+    // Create new user
+    const newUser = {
+      id: Date.now(),
+      name: formData.name,
+      email: formData.email,
+      password: formData.password,
+    };
+
+    // Add user to local users
+    users.push(newUser);
+
+    localStorage.setItem(
+      "cozykieUsers",
+      JSON.stringify(users)
+    );
+
+    // Automatically log in the new user
+    localStorage.setItem(
+      "cozykieUser",
+      JSON.stringify({
+        id: newUser.id,
+        name: newUser.name,
+        email: newUser.email,
+      })
+    );
+
+    // Tell Header that login state changed
+    window.dispatchEvent(
+      new Event("cozykieAuthChange")
+    );
+
+    // Go to homepage
+    navigate("/");
   };
+
+
 
   return (
     <AuthLayout heading={heading}>

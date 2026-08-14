@@ -33,71 +33,64 @@ const reviews = [
 
 const CommunitySection = () => {
   return (
-    <section className="bg-light-bg px-6 lg:px-10 py-20">
-      <div className="max-w-7xl mx-auto">
+    <section className="bg-light-bg px-6 py-16 sm:px-10 lg:px-16 xl:px-24 2xl:px-32">
+      <SectionHeads heading={heading} />
 
-        {/* Heading */}
-        <SectionHeads heading={heading} />
+      <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
+        {reviews.map((review) => (
+          <div
+            key={review.id}
+            className="overflow-hidden rounded-2xl shadow-sm transition-shadow duration-300 hover:shadow-lg"
+            style={{
+              backgroundColor: "white",
+              backgroundImage:
+                "repeating-linear-gradient(to bottom, transparent, transparent 34px, #EDE2D3 35px)",
+              backgroundPosition: "0 86px",
+            }}
+          >
+            <div className="px-6 py-6">
 
-        {/* Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {reviews.map((review) => (
-            <div
-              key={review.id}
-              className="rounded-2xl overflow-hidden shadow-sm hover:shadow-lg transition-shadow duration-300"
-              style={{
-                backgroundColor: "white",
-                backgroundImage:
-                  "repeating-linear-gradient(to bottom, transparent, transparent 34px, #EDE2D3 35px)",
-                backgroundPosition: "0 86px",
-              }}
-            >
-              <div className="px-6 py-6">
+              <div className="mb-5 flex items-center justify-between border-b border-dashed border-border pb-3">
 
-                {/* Header */}
-                <div className="flex items-center justify-between border-b border-dashed border-border pb-3 mb-5">
-                  <div>
-                    <h3 className="font-semibold text-primary">
-                      {review.name}
-                    </h3>
+                <div>
+                  <h3 className="font-semibold text-primary">
+                    {review.name}
+                  </h3>
 
-                    <p className="text-xs text-text">
-                      {review.location}
-                    </p>
-                  </div>
-
-                  <div className="flex gap-1">
-                    {Array.from({ length: 5 }).map((_, i) => (
-                      <FiStar
-                        key={i}
-                        size={14}
-                        className={
-                          i < review.rating
-                            ? "fill-tag text-tag"
-                            : "text-border"
-                        }
-                      />
-                    ))}
-                  </div>
+                  <p className="text-xs text-text">
+                    {review.location}
+                  </p>
                 </div>
 
-                {/* Review */}
-                <p className="text-primary leading-8 text-base">
-                  {review.text}
-                </p>
-
-                {/* Footer */}
-                <div className="mt-6 pt-4 border-t border-dashed border-border">
-                  <span className="text-xs uppercase tracking-[2px] text-accent font-semibold">
-                    Community Story
-                  </span>
+                <div className="flex gap-1">
+                  {Array.from({ length: 5 }).map((_, i) => (
+                    <FiStar
+                      key={i}
+                      size={14}
+                      className={
+                        i < review.rating
+                          ? "fill-tag text-tag"
+                          : "text-border"
+                      }
+                    />
+                  ))}
                 </div>
 
               </div>
-            </div>
-          ))}
-        </div>
 
+              <p className="text-base leading-8 text-primary">
+                {review.text}
+              </p>
+
+              <div className="mt-6 border-t border-dashed border-border pt-4">
+                <span className="text-xs font-semibold uppercase tracking-[2px] text-accent">
+                  Community Story
+                </span>
+              </div>
+
+            </div>
+          </div>
+        ))}
       </div>
     </section>
   );

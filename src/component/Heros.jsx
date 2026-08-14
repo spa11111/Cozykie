@@ -1,12 +1,12 @@
 import { NavLink } from "react-router-dom";
 
-const Heros = ({ heading, image, alt }) => {
+const Heros = ({ heading, image, alt, ctaLabel = "Try Tool", ctaTo = "/recipes" }) => {
   return (
-    <section className="relative w-full bg-dark-bg px-6 py-10 lg:px-10">
-      <div className="relative mx-auto">
+    <section className="bg-dark-bg py-12 px-6 sm:px-10 lg:px-16 xl:px-24 2xl:px-32">
+      <div className="relative mx-auto w-full max-w-[1600px]">
 
         {/* Image */}
-        <div className="ml-auto w-full lg:w-[72%]">
+        <div className="ml-auto w-[72%]">
           <img
             src={image}
             alt={alt}
@@ -15,7 +15,7 @@ const Heros = ({ heading, image, alt }) => {
         </div>
 
         {/* Content card */}
-        <div className="absolute left-[4%] top-1/2 w-[520px] max-w-[80%] -translate-y-1/2 rounded-2xl bg-light-bg p-8 shadow-[0_10px_40px_rgba(0,0,0,0.08)] sm:p-12">
+        <div className="absolute left-0 top-1/2 w-[520px] max-w-[80%] -translate-y-1/2 rounded-2xl bg-light-bg p-8 shadow-[0_10px_40px_rgba(0,0,0,0.08)] sm:p-12">
 
           <span className="text-xs font-bold uppercase tracking-[3px] text-hover">
             {heading.span}
@@ -32,14 +32,16 @@ const Heros = ({ heading, image, alt }) => {
             {heading.desc}
           </p>
 
-          <div className="mt-8 flex flex-wrap items-center gap-4">
-            <NavLink
-              to="/recipes"
-              className="rounded-md bg-primary px-7 py-3 text-sm font-semibold text-white transition-colors hover:bg-accent"
-            >
-              Try Tool
-            </NavLink>
-          </div>
+          {ctaLabel && (
+            <div className="mt-8 flex flex-wrap items-center gap-4">
+              <NavLink
+                to={ctaTo}
+                className="rounded-md bg-primary px-7 py-3 text-sm font-semibold text-white transition-colors hover:bg-accent"
+              >
+                {ctaLabel}
+              </NavLink>
+            </div>
+          )}
 
         </div>
       </div>
@@ -47,4 +49,4 @@ const Heros = ({ heading, image, alt }) => {
   );
 };
 
-export default Heros;
+export default Heros; 

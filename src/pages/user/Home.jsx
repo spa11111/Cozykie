@@ -3,7 +3,7 @@ import { toast } from 'react-toastify';
 import UserLayout from '../../layout/UserLayout';
 import { data } from '../../staticData/Home';
 import axios from 'axios';
-import Hero from '../../component/HomeSection/Hero';
+import Hero from '../../component/Hero';
 import BrowseByCategory from '../../component/HomeSection/BrowseByCategory';
 import FeaturedRecipe from '../../component/HomeSection/FeaturedRecipe';
 import BakingCompanion from '../../component/HomeSection/BakingCompanion';
@@ -26,7 +26,7 @@ const Home = () => {
 
     const fetchData = async () => {
         try {
-            const response = await axios.get(url);  
+            const response = await axios.get(url);
             setUsers(response.data);
         } catch (error) {
             console.error("Error fetching data:", error);

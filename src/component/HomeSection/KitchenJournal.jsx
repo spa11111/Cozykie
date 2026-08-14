@@ -26,81 +26,82 @@ const notes = [
 ];
 
 const Star = ({ filled }) => (
-  <span className={filled ? "text-tag" : "text-tag/40"}>★</span>
+  <span className={filled ? "text-tag" : "text-tag/40"}>
+    ★
+  </span>
 );
 
 const KitchenJournal = () => {
   return (
-    <section className="bg-dark-bg px-6 lg:px-10 py-20">
-      <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-[1.1fr_0.9fr] gap-12 items-center">
+    <section className="bg-dark-bg px-6 py-16 sm:px-10 lg:px-16 xl:px-24 2xl:px-32">
+      <div className="grid grid-cols-1 gap-10 lg:grid-cols-2">
 
         {/* Left */}
         <div className="flex flex-col justify-center">
 
-          {/* Smaller spacing than other sections */}
           <div className="mb-1">
             <SectionHeads heading={heading} />
           </div>
 
-          {/* Notes */}
           <div className="flex flex-col gap-5">
             {notes.map((note, i) => (
               <div
                 key={i}
-                className={`relative rounded-[2rem] px-8 py-7 mb-5 shadow-md transition hover:-translate-y-1 ${
-                  note.emphasis ? "bg-border" : "bg-light-bg"
+                className={`relative mb-5 rounded-[2rem] px-8 py-7 shadow-md transition hover:-translate-y-1 ${
+                  note.emphasis
+                    ? "bg-border"
+                    : "bg-light-bg"
                 }`}
               >
-                {/* Tape */}
-                <div className="absolute -top-2 left-8 w-20 h-5 bg-hover/70 rounded rotate-[-6deg]" />
+                <div className="absolute -top-2 left-8 h-5 w-20 rotate-[-6deg] rounded bg-hover/70" />
 
                 <div className="flex items-center justify-between">
                   <div>
-                    <p className="text-xs uppercase tracking-[3px] font-bold text-primary">
+                    <p className="text-xs font-bold uppercase tracking-[3px] text-primary">
                       {note.recipe}
                     </p>
 
-                    <p className="text-xs text-text mt-1">
+                    <p className="mt-1 text-xs text-text">
                       {note.date}
                     </p>
                   </div>
 
                   <div className="text-lg">
                     {[...Array(5)].map((_, idx) => (
-                      <Star key={idx} filled={idx < note.rating} />
+                      <Star
+                        key={idx}
+                        filled={idx < note.rating}
+                      />
                     ))}
                   </div>
                 </div>
 
-                <p className="text-xl leading-relaxed text-primary mt-3 mb-2">
+                <p className="mb-2 mt-3 text-xl leading-relaxed text-primary">
                   {note.quote}
                 </p>
               </div>
             ))}
           </div>
 
-          {/* Link */}
-          <div className="flex justify-end mt-6">
+          <div className="mt-6 flex justify-end">
             <Link
               to="/journal"
-              className="inline-flex items-center gap-2 text-sm font-semibold text-accent hover:text-hover transition"
+              className="inline-flex items-center gap-2 text-sm font-semibold text-accent transition hover:text-hover"
             >
               Start your journal
-              <span className="transition-transform hover:translate-x-1">
-                →
-              </span>
+              <span>→</span>
             </Link>
           </div>
         </div>
 
         {/* Right */}
-          <div className="h-[600px] rounded-[2.5rem] overflow-hidden shadow-xl">
-            <img
-              src={kitchenJournalHero}
-              alt="Kitchen journal"
-              className="w-full h-full object-cover"
-            />
-          </div>
+        <div className="h-[600px] overflow-hidden rounded-[2.5rem] shadow-xl">
+          <img
+            src={kitchenJournalHero}
+            alt="Kitchen journal"
+            className="h-full w-full object-cover"
+          />
+        </div>
 
       </div>
     </section>

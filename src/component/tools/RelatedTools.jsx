@@ -13,7 +13,7 @@ const RelatedTools = ({ tools }) => {
         Need something else?
       </h3>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-10">
         {tools.map((tool, i) => {
           const Icon = tool.icon;
 
@@ -35,9 +35,6 @@ const RelatedTools = ({ tools }) => {
                 >
                   {tool.name}
                 </h4>
-                <p className="text-sm text-primary/70 leading-relaxed text-left">
-                  {tool.desc}
-                </p>
               </div>
 
             </NavLink>

@@ -1,10 +1,8 @@
-import { Link, NavLink } from "react-router-dom";
+import { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 import { FiStar } from "react-icons/fi";
-import chocolateCookie from "../../assets/images/chocolate-cookie.jpg";
-import rainydayCookie from "../../assets/images/rainy-day-cookie.jpg";
-import nuttyCookie from "../../assets/images/nuttyy-cookie.jpg";
-import holidayCookie from "../../assets/images/holiday-cookie.jpg";
 import SectionHeads from "../SectionHeads";
+import { getCollections } from "../../services/api";
 
 const heading = {
   span: "Featured Collections",
@@ -12,94 +10,75 @@ const heading = {
   desc: "Browse curated collections filled with comforting homemade favourites.",
 };
 
-
-const collections = [
-  {
-    slug: "rainy-day",
-    name: "Rainy Day Cookies",
-    badge: "Cozy Pick",
-    rating: 4.8,
-    time: "20 min",
-    image: rainydayCookie,
-  },
-  {
-    slug: "holiday-favorites",
-    name: "Holiday Favorites",
-    badge: "Seasonal",
-    rating: 4.9,
-    time: "35 min",
-    image: holidayCookie,
-  },
-  {
-    slug: "chocolate-lovers",
-    name: "Chocolate Lovers",
-    badge: "Community Pick",
-    rating: 4.7,
-    time: "25 min",
-    image: chocolateCookie,
-  },
-  {
-    slug: "nutty-flavors",
-    name: "Nutty Flavors",
-    badge: "Trending",
-    rating: 4.6,
-    time: "30 min",
-    image: nuttyCookie,
-  },
-];
-
 const BrowseByCategory = () => {
-  return (
-    <section className="bg-light-bg px-6 lg:px-10 py-20">
-      <div className="max-w-7xl mx-auto">
+  const [collections, setCollections] = useState([]);
+  const [loading, setLoading] = useState(true);
 
-        {/* Heading */}
+  useEffect(() => {
+    const fetchCollections = async () => {
+      try {
+        setLoading(true);
+        const data = await getCollections();
+        setCollections(data.slice(0, 4));
+      } catch (err) {
+        setCollections([]);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchCollections();
+  }, []);
+
+  if (loading) {
+    return (
+      <section className="bg-light-bg px-6 py-16 sm:px-10 lg:px-16 xl:px-24 2xl:px-32">
         <SectionHeads heading={heading} />
+        <p className="text-center text-text py-16">Loading collections...</p>
+      </section>
+    );
+  }
 
-        {/* Cards */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-          {collections.map((item) => (
-            <Link
-              key={item.slug}
-              to={`/collections/${item.slug}`}
-              className="group relative h-[420px] rounded-3xl overflow-hidden"
-            >
-              <img
-                src={item.image}
-                alt={item.name}
-                className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition duration-500"
-              />
+  return (
+    <section className="bg-light-bg px-6 py-16 sm:px-10 lg:px-16 xl:px-24 2xl:px-32">
+      <SectionHeads heading={heading} />
 
-              <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-black/10 to-transparent" />
+      <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
+        {collections.map((item) => (
+          <Link
+            key={item.slug}
+            to={`/recipes?filter=${encodeURIComponent(item.tag)}`}
+            className="group relative h-[420px] overflow-hidden rounded-3xl"
+          >
+            <img
+              src={item.image}
+              alt={item.name}
+              className="absolute inset-0 h-full w-full object-cover transition duration-500 group-hover:scale-105"
+            />
 
-              <span className="absolute top-4 left-4 bg-tag-bg text-primary text-xs font-semibold px-3 py-1.5 rounded-full">
-                {item.badge}
-              </span>
+            <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-black/10 to-transparent" />
 
-              <div className="absolute bottom-0 left-0 right-0 p-5">
-                <div className="flex items-center gap-2 text-white text-sm mb-2">
-                  <FiStar className="fill-yellow-500 text-yellow-500" size={14} />
-                  <span className="font-semibold">{item.rating}</span>
-                  <span className="text-white/60">•</span>
-                  <span>{item.time}</span>
-                </div>
+            <span className="absolute left-4 top-4 rounded-full bg-tag-bg px-3 py-1.5 text-xs font-semibold text-primary">
+              {item.tag}
+            </span>
 
-                <h3 className="font-serif text-xl font-bold text-white mb-2 leading-snug">
-                  {item.name}
-                </h3>
+            <div className="absolute bottom-0 left-0 right-0 p-5">
+              <h3 className="mb-2 font-serif text-xl font-bold leading-snug text-white">
+                {item.name}
+              </h3>
 
-                <span className="inline-flex items-center gap-1.5 text-sm font-semibold text-tag-bg group-hover:text-tag transition">
-                  See recipe
-                  <span className="transition-transform group-hover:translate-x-1">→</span>
+              <span className="inline-flex items-center gap-1.5 text-sm font-semibold text-tag-bg transition group-hover:text-tag">
+                See recipe
+                <span className="transition-transform group-hover:translate-x-1">
+                  →
                 </span>
-              </div>
-            </Link>
-          ))}
-        </div>
-
+              </span>
+            </div>
+          </Link>
+        ))}
       </div>
     </section>
   );
 };
 
-export default BrowseByCategory;
+export default BrowseByCategory; 

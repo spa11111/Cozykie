@@ -3,30 +3,35 @@ import logo from "../assets/images/logo.png";
 
 const AuthLayout = ({ heading, children }) => {
   return (
-    <section className="min-h-screen bg-dark-bg flex items-center justify-center py-14">
-      {/* Card */}
-      <div className="relative w-full max-w-md bg-light-bg rounded-3xl shadow-xl p-8  sm:px-12 sm:py-14 overflow-hidden">
+    <section className="min-h-screen bg-light-bg px-4 py-10 sm:px-6 sm:py-12 lg:px-10">
+      <div className="mx-auto w-full max-w-md rounded-3xl bg-white p-6 shadow-sm sm:p-8 lg:p-10">
 
-        <div className="relative">
-          {/* Logo */}
-          <NavLink to="/" className="flex justify-center ">
-            <img src={logo} alt="Cozykie" className="h-20 sm:h-24 w-auto" />
-          </NavLink>
+        {/* Logo */}
+        <NavLink to="/" className="flex justify-center">
+          <img
+            src={logo}
+            alt="Cozykie"
+            className="h-20 w-auto sm:h-24"
+          />
+        </NavLink>
 
-          {/* Heading */}
-          <div className="text-center mb-8">
-            <h1
-              className="text-lg sm:text-3xl font-bold text-primary mb-2"
-              style={{ fontFamily: "'Cormorant Garamond', serif" }}
-            >
-              {heading.title}
-            </h1>
-            <p className="text-sm text-text">{heading.desc}</p>
-          </div>
+        {/* Heading */}
+        <div className="mb-8 text-center">
+          <h1
+            className="mb-2 text-2xl font-bold text-primary sm:text-3xl"
+            style={{ fontFamily: "'Cormorant Garamond', serif" }}
+          >
+            {heading.title}
+          </h1>
 
-          {/* Form content */}
-          {children}
+          <p className="text-sm text-text sm:text-base">
+            {heading.desc}
+          </p>
         </div>
+
+        {/* Form content */}
+        {children}
+
       </div>
     </section>
   );

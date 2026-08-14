@@ -5,16 +5,12 @@ import './App.css'
 import App from './App.jsx'
 import { BrowserRouter } from 'react-router-dom'
 import { ToastContainer } from 'react-toastify'
-// import { Provider } from 'react-redux'
-// import store from './redux/store.js'
 
-createRoot(document.getElementById('root')).render(
+createRoot(document.getElementById("root")).render(
   <StrictMode>
-    {/* <Provider store={store}> */}
     <BrowserRouter>
-  
-    <App />
-     <ToastContainer
+      <App />
+      <ToastContainer
         position="top-right"
         autoClose={3000}
         closeOnClick
@@ -22,7 +18,5 @@ createRoot(document.getElementById('root')).render(
         theme="light"
       />
     </BrowserRouter>
-    {/* </Provider> */}
-    
-  </StrictMode>,
-)
+  </StrictMode>
+);
