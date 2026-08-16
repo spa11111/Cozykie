@@ -1,6 +1,5 @@
 import { useState, useEffect } from "react";
 import { useParams, NavLink } from "react-router-dom";
-import { FiChevronRight } from "react-icons/fi";
 import UserLayout from "../../layout/UserLayout";
 import RecipeOverview from "../../component/recipes/RecipeOverview";
 import RecipeMeta from "../../component/recipes/RecipeMeta";
@@ -40,7 +39,13 @@ const RecipeDetail = () => {
   }, [slug]);
 
   useEffect(() => {
-    if (!recipe) return;
+    // Guard: only fetch variants when this recipe actually belongs
+    // to a cookieType group. Most recipes don't have one, and calling
+    // the API with `undefined` was returning/matching the wrong recipes.
+    if (!recipe || !recipe.cookieType) {
+      setVariantRecipes([]);
+      return;
+    }
 
     const fetchVariants = async () => {
       try {
@@ -93,20 +98,7 @@ const RecipeDetail = () => {
   return (
     <UserLayout>
       <div className="bg-light-bg">
-        <div className="max-w-6xl mx-auto px-6 sm:px-10 lg:px-16 py-10 lg:py-14">
-
-          {/* Breadcrumb */}
-          <div className="flex items-center gap-2 text-sm text-text mb-8">
-            <NavLink to="/" className="hover:text-accent transition-colors">
-              Home
-            </NavLink>
-            <FiChevronRight size={14} />
-            <NavLink to="/recipes" className="hover:text-accent transition-colors">
-              Recipes
-            </NavLink>
-            <FiChevronRight size={14} />
-            <span className="text-primary font-medium">{recipe.name}</span>
-          </div>
+        <div className="max-w-6xl mx-auto px-6 sm:px-10 lg:px-16 xl:px-24 2xl:px-32 py-10 lg:py-14">
 
           {/* Hero */}
           <div className="mb-12">

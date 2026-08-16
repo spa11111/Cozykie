@@ -10,7 +10,22 @@ import MeasurementConverter from "./pages/user/tools/MeasurementConverter";
 import PantrySubstitution from "./pages/user/tools/PantrySubstitution";
 import Collections from "./pages/user/Collections";
 import Recipes from "./pages/user/Recipes";
-import RecipeDetail from "./component/recipes/RecipeDetail";
+import RecipeDetail from "./pages/user/RecipeDetail";
+import Order from "./pages/user/Order";
+import Favourites from "./pages/user/Favourites";
+import Journal from "./pages/user/Journal";
+import Profile from "./pages/user/Profile";
+import CreateRecipe from "./pages/user/recipe/CreateRecipe";
+import EditRecipe from "./pages/user/recipe/EditRecipe";
+import YourRecipes from "./pages/user/recipe/YourRecipes";
+import AdminLayout from "./layout/AdminLayout";
+import AdminRoute from "./routes/AdminRoute";
+import AdminDashboard from "./pages/Admin/AdminDashboard";
+import AdminUsers from "./pages/Admin/AdminUsers";
+import AdminCollections from "./pages/Admin/AdminCollections";
+import AdminOrders from "./pages/Admin/AdminOrders";
+import AdminRecipes from "./pages/Admin/AdminRecipes";
+import AdminProfile from "./pages/Admin/AdminProfile";
 
 const MyRoutes = () => {
   return (
@@ -29,6 +44,32 @@ const MyRoutes = () => {
       <Route path="/recipes" element={<Recipes />} />
       <Route path="/recipes/:slug" element={<RecipeDetail />} />
 
+            <Route path="/order/:slug" element={<Order />} />
+
+            <Route path="/favourite" element={<Favourites />} />
+             <Route path="/journal" element={<Journal />} />
+             <Route path="/profile" element={<Profile />} />
+
+             <Route path="/recipes/new" element={<CreateRecipe />} />
+<Route path="/recipes/:slug/edit" element={<EditRecipe />} />
+<Route path="/your-recipes" element={<YourRecipes />} />
+
+
+<Route
+  path="/admin"
+  element={
+    <AdminRoute>
+      <AdminLayout />
+    </AdminRoute>
+  }
+>
+  <Route index element={<AdminDashboard />} />
+  <Route path="users" element={<AdminUsers />} />
+  <Route path="collections" element={<AdminCollections />} />
+  <Route path="orders" element={<AdminOrders />} />
+  <Route path="recipes" element={<AdminRecipes />} />
+  <Route path="profile" element={<AdminProfile />} />
+</Route>
       <Route path="*" element={<PageNotFound />} />
     </Routes>
   );

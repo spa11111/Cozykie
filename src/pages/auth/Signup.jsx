@@ -1,7 +1,11 @@
 import { useState } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { toast } from "react-toastify";
 import { FiUser, FiMail, FiLock, FiEye, FiEyeOff } from "react-icons/fi";
 import AuthLayout from "../../layout/AuthLayout";
+import { getUserByEmail, registerUser } from "../../services/api";
+import { loginSuccess } from "../../redux/actions/auth.actions";
 
 const heading = {
   title: "Start your baking story.",
@@ -10,9 +14,12 @@ const heading = {
 
 const Signup = () => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [agreedToTerms, setAgreedToTerms] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -24,67 +31,41 @@ const Signup = () => {
     setFormData((prev) => ({ ...prev, [e.target.name]: e.target.value }));
   };
 
-
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // Check if passwords match
     if (formData.password !== formData.confirmPassword) {
-      alert("Passwords do not match.");
+      toast.error("Passwords do not match.");
       return;
     }
 
-    // Get existing users
-    const users = JSON.parse(
-      localStorage.getItem("cozykieUsers") || "[]"
-    );
+    setSubmitting(true);
 
-    // Check if email is already registered
-    const existingUser = users.find(
-      (user) => user.email.toLowerCase() === formData.email.toLowerCase()
-    );
+    const email = formData.email.trim().toLowerCase();
+    const existingUser = await getUserByEmail(email);
 
     if (existingUser) {
-      alert("An account with this email already exists.");
+      toast.error("An account with this email already exists.");
+      setSubmitting(false);
       return;
     }
 
-    // Create new user
-    const newUser = {
+    const newUser = await registerUser({
       id: Date.now(),
       name: formData.name,
-      email: formData.email,
+      email,
       password: formData.password,
-    };
+      role: "user",
+    });
 
-    // Add user to local users
-    users.push(newUser);
+    const { password: _password, ...safeUser } = newUser;
 
-    localStorage.setItem(
-      "cozykieUsers",
-      JSON.stringify(users)
-    );
-
-    // Automatically log in the new user
-    localStorage.setItem(
-      "cozykieUser",
-      JSON.stringify({
-        id: newUser.id,
-        name: newUser.name,
-        email: newUser.email,
-      })
-    );
-
-    // Tell Header that login state changed
-    window.dispatchEvent(
-      new Event("cozykieAuthChange")
-    );
-
-    // Go to homepage
+    dispatch(loginSuccess(safeUser));
+    toast.success("Account created! Welcome to Cozykie.");
     navigate("/");
+
+    setSubmitting(false);
   };
-
-
 
   return (
     <AuthLayout heading={heading}>
@@ -217,9 +198,10 @@ const Signup = () => {
         {/* Submit */}
         <button
           type="submit"
-          className="w-full text-sm font-semibold text-white bg-primary rounded-full px-6 py-3.5 hover:bg-accent transition-colors duration-300 mt-2"
+          disabled={submitting}
+          className="w-full text-sm font-semibold text-white bg-primary rounded-full px-6 py-3.5 hover:bg-accent transition-colors duration-300 mt-2 disabled:opacity-60"
         >
-          Create Account
+          {submitting ? "Creating Account..." : "Create Account"}
         </button>
       </form>
 

@@ -1,4 +1,3 @@
-import { BrowserRouter } from "react-router-dom";
 import ScrollToTop from "./component/ScrollToTop";
 import MyRoutes from "./MyRoutes";
 

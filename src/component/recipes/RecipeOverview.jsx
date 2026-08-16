@@ -1,7 +1,8 @@
-import { useState } from "react";
+import { useSelector, useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { FiStar, FiHeart, FiShare2, FiShoppingBag, FiClock } from "react-icons/fi";
+import { toggleFavorite } from "../../redux/actions/favorites.actions";
 
 const formatDate = (dateStr) => {
   if (!dateStr) return null;
@@ -12,18 +13,17 @@ const formatDate = (dateStr) => {
   });
 };
 
-const getLoggedInUser = () => {
-  const savedUser = localStorage.getItem("cozykieUser");
-  return savedUser ? JSON.parse(savedUser) : null;
-};
-
 const RecipeOverview = ({ recipe }) => {
   const navigate = useNavigate();
-  const [saved, setSaved] = useState(false);
+  const dispatch = useDispatch();
+  const user = useSelector((state) => state.auth.user);
+  const userFavorites = useSelector((state) =>
+    user ? state.favorites[user.id] || [] : []
+  );
+
+  const saved = userFavorites.some((r) => r.slug === recipe.slug);
 
   const handleOrderNow = () => {
-    const user = getLoggedInUser();
-
     if (!user) {
       toast.info("Please log in to place an order.");
       navigate("/login");
@@ -34,16 +34,13 @@ const RecipeOverview = ({ recipe }) => {
   };
 
   const handleSaveRecipe = () => {
-    const user = getLoggedInUser();
-
     if (!user) {
       toast.info("Please log in to save recipes.");
       navigate("/login");
       return;
     }
 
-    setSaved((prev) => !prev);
-    toast.success(saved ? "Removed from saved recipes." : "Recipe saved!");
+    dispatch(toggleFavorite(user.id, recipe));
   };
 
   return (

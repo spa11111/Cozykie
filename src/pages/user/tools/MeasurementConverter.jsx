@@ -6,7 +6,7 @@ import Heros from "../../../component/Heros";
 import ToolCard from "../../../component/tools/ToolCard";
 import RelatedTools from "../../../component/tools/RelatedTools";
 
-// import measurementConverter from "../../../assets/images/measurement-converter.jpg";
+import measurementConverter from "../../../assets/images/measurement-converter.jpg";
 
 import {
   FiRepeat,
@@ -16,7 +16,7 @@ import {
 
 const heading = {
   span: "Measurement Converter",
-  title: "Make measurements make sense.",
+  title: "Measurements that make sense.",
   desc: "Convert cups, grams, ounces, and more with ease — so you can follow recipes without second-guessing the measurements.",
 };
 

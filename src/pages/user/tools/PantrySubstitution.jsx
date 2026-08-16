@@ -6,7 +6,7 @@ import Heros from "../../../component/Heros";
 import ToolCard from "../../../component/tools/ToolCard";
 import RelatedTools from "../../../component/tools/RelatedTools";
 
-// import pantrySubstitution from "../../../assets/images/substitution.jpg";
+import pantrySubstitution from "../../../assets/images/substitution.jpg";
 
 import {
   FiRepeat,

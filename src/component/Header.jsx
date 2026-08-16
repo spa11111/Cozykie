@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
+import { useSelector, useDispatch } from "react-redux";
 import logo from "../assets/images/logo.png";
+import { logout as logoutAction } from "../redux/actions/auth.actions";
 
 import {
   FaSearch,
@@ -9,20 +11,20 @@ import {
   FaChevronDown,
   FaUser,
 } from "react-icons/fa";
+import { FiLogOut } from "react-icons/fi";
+import ConfirmDialog from "../component/ConfirmDialog";
 
 const Header = () => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const [showSearch, setShowSearch] = useState(false);
   const [mobileMenu, setMobileMenu] = useState(false);
   const [showTools, setShowTools] = useState(false);
   const [showProfile, setShowProfile] = useState(false);
+  const [showLogoutConfirm, setShowLogoutConfirm] = useState(false);
 
-  // Check whether user is logged in
-  const [user, setUser] = useState(() => {
-    const savedUser = localStorage.getItem("cozykieUser");
-    return savedUser ? JSON.parse(savedUser) : null;
-  });
+  const user = useSelector((state) => state.auth.user);
 
   useEffect(() => {
     if (mobileMenu) {
@@ -36,41 +38,20 @@ const Header = () => {
     };
   }, [mobileMenu]);
 
-  useEffect(() => {
-    const handleAuthChange = () => {
-      const savedUser = localStorage.getItem("cozykieUser");
-
-      setUser(savedUser ? JSON.parse(savedUser) : null);
-    };
-
-    window.addEventListener("cozykieAuthChange", handleAuthChange);
-
-    return () => {
-      window.removeEventListener("cozykieAuthChange", handleAuthChange);
-    };
-  }, []);
-
   const handleLogout = () => {
-    localStorage.removeItem("cozykieUser");
-
-    setUser(null);
+    dispatch(logoutAction());
     setShowProfile(false);
-
     navigate("/");
   };
 
   const linkClass = ({ isActive }) =>
     `uppercase text-sm tracking-[2px] font-semibold transition ${
-      isActive
-        ? "text-accent"
-        : "text-primary hover:text-hover"
+      isActive ? "text-accent" : "text-primary hover:text-hover"
     }`;
 
   const dropdownLinkClass = ({ isActive }) =>
     `block px-6 py-3 transition ${
-      isActive
-        ? "text-accent font-semibold"
-        : "text-primary hover:text-hover"
+      isActive ? "text-accent font-semibold" : "text-primary hover:text-hover"
     }`;
 
   return (
@@ -89,18 +70,17 @@ const Header = () => {
 
           {/* Desktop Navigation */}
           <nav className="hidden flex-1 items-center justify-center gap-7 lg:flex xl:gap-10 2xl:gap-12">
-
             <NavLink to="/" end className={linkClass}>
               Home
             </NavLink>
 
-<NavLink to="/collections" className={linkClass}>
-  Collection
-</NavLink>
+            <NavLink to="/collections" className={linkClass}>
+              Collection
+            </NavLink>
 
-<NavLink to="/recipes" className={linkClass}>
-  Recipes
-</NavLink>
+            <NavLink to="/recipes" className={linkClass}>
+              Recipes
+            </NavLink>
 
             {/* Tools Dropdown */}
             <div className="relative">
@@ -109,7 +89,6 @@ const Header = () => {
                 className="flex items-center gap-2 uppercase text-sm tracking-[2px] font-semibold text-primary hover:text-hover"
               >
                 Tools
-
                 <FaChevronDown
                   className={`text-xs transition-transform duration-300 ${
                     showTools ? "rotate-180" : ""
@@ -153,7 +132,6 @@ const Header = () => {
 
           {/* Desktop Right */}
           <div className="hidden items-center gap-3 lg:flex xl:gap-4">
-
             {/* Search */}
             {!showSearch ? (
               <button
@@ -165,13 +143,11 @@ const Header = () => {
             ) : (
               <div className="flex w-56 items-center rounded-full border border-border bg-white px-4 py-2 xl:w-72">
                 <FaSearch className="text-gray-400" />
-
                 <input
                   autoFocus
                   placeholder="Search recipes..."
                   className="flex-1 bg-transparent px-3 text-sm outline-none"
                 />
-
                 <button onClick={() => setShowSearch(false)}>
                   <FaTimes />
                 </button>
@@ -201,17 +177,37 @@ const Header = () => {
                       <p className="text-sm font-semibold text-primary">
                         {user.name || "Baker"}
                       </p>
-
                       <p className="mt-1 truncate text-xs text-text">
                         {user.email}
                       </p>
                     </div>
 
                     <button
-                      onClick={handleLogout}
+                      onClick={() => navigate("/profile")}
                       className="w-full px-5 py-3 text-left text-sm text-primary transition hover:bg-hover"
                     >
-                      Logout
+                      Profile
+                    </button>
+
+                    <button
+                      onClick={() => navigate("/favourite")}
+                      className="w-full px-5 py-3 text-left text-sm text-primary transition hover:bg-hover"
+                    >
+                      Favourites
+                    </button>
+
+                    <button
+                      onClick={() => navigate("/journal")}
+                      className="w-full px-5 py-3 text-left text-sm text-primary transition hover:bg-hover"
+                    >
+                      Journal
+                    </button>
+
+                    <button
+                      onClick={() => setShowLogoutConfirm(true)}
+                      className="w-full flex items-center gap-2 px-5 py-3 text-left text-sm text-primary transition hover:bg-hover"
+                    >
+                      Log out
                     </button>
                   </div>
                 )}
@@ -233,21 +229,16 @@ const Header = () => {
       <div
         onClick={() => setMobileMenu(false)}
         className={`fixed inset-0 z-40 bg-black/40 transition-all duration-300 lg:hidden ${
-          mobileMenu
-            ? "visible opacity-100"
-            : "invisible opacity-0"
+          mobileMenu ? "visible opacity-100" : "invisible opacity-0"
         }`}
       />
 
       {/* Drawer */}
       <aside
         className={`fixed right-0 top-0 z-50 h-screen w-80 max-w-[85vw] bg-light-bg shadow-2xl transition-transform duration-300 ease-in-out lg:hidden ${
-          mobileMenu
-            ? "translate-x-0"
-            : "translate-x-full"
+          mobileMenu ? "translate-x-0" : "translate-x-full"
         }`}
       >
-        {/* Header */}
         <div className="flex items-center px-6 py-5">
           <button
             onClick={() => setMobileMenu(false)}
@@ -257,15 +248,14 @@ const Header = () => {
           </button>
         </div>
 
-        {/* Links */}
         <nav className="flex flex-col py-4">
           <NavLink to="/recipes" onClick={() => setMobileMenu(false)} className="px-6 py-4 hover:bg-hover">
-  Recipes
-</NavLink>
+            Recipes
+          </NavLink>
 
-<NavLink to="/collections" onClick={() => setMobileMenu(false)} className="px-6 py-4">
-  Collection
-</NavLink>
+          <NavLink to="/collections" onClick={() => setMobileMenu(false)} className="px-6 py-4">
+            Collection
+          </NavLink>
 
           <NavLink
             to="/journal"
@@ -292,18 +282,14 @@ const Header = () => {
           </NavLink>
 
           <div className="p-6">
-
-            {/* Mobile Search */}
             <div className="flex items-center rounded-full border border-border bg-white px-4 py-3">
               <FaSearch className="text-gray-400" />
-
               <input
                 placeholder="Search..."
                 className="flex-1 bg-transparent px-3 text-sm outline-none"
               />
             </div>
 
-            {/* Mobile Authentication */}
             {!user ? (
               <button
                 onClick={() => {
@@ -325,7 +311,6 @@ const Header = () => {
                     <p className="text-sm font-semibold text-primary">
                       {user.name || "Baker"}
                     </p>
-
                     <p className="truncate text-xs text-text">
                       {user.email}
                     </p>
@@ -335,7 +320,7 @@ const Header = () => {
                 <button
                   onClick={() => {
                     setMobileMenu(false);
-                    handleLogout();
+                    setShowLogoutConfirm(true);
                   }}
                   className="w-full rounded-full border border-primary py-3 font-semibold text-primary transition hover:bg-primary hover:text-white"
                 >
@@ -346,6 +331,20 @@ const Header = () => {
           </div>
         </nav>
       </aside>
+
+      {/* Logout confirmation — shared by both desktop and mobile triggers */}
+      {showLogoutConfirm && (
+        <ConfirmDialog
+          title="Log Out"
+          message="Are you sure you want to log out?"
+          confirmLabel="Log Out"
+          onConfirm={() => {
+            setShowLogoutConfirm(false);
+            handleLogout();
+          }}
+          onCancel={() => setShowLogoutConfirm(false)}
+        />
+      )}
     </>
   );
 };

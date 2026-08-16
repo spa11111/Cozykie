@@ -1,0 +1,15 @@
+export const LOGIN_SUCCESS = "LOGIN_SUCCESS";
+export const LOGOUT = "LOGOUT";
+
+// Journal
+export const JOURNAL_LOADED = "JOURNAL_LOADED";
+export const ADD_JOURNAL_ENTRY = "ADD_JOURNAL_ENTRY";
+export const UPDATE_JOURNAL_ENTRY = "UPDATE_JOURNAL_ENTRY";
+export const DELETE_JOURNAL_ENTRY = "DELETE_JOURNAL_ENTRY";
+
+//ORDER
+export const ORDERS_LOADED = "ORDERS_LOADED";
+export const ADD_ORDER = "ADD_ORDER";
+
+//PROFILE
+export const UPDATE_USER = "UPDATE_USER";

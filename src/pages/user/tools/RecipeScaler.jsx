@@ -9,7 +9,7 @@ import {
   FiTrash2,
 } from "react-icons/fi";
 import Heros from "../../../component/Heros";
-// import recipeScaler from "../../../assets/images/recipe-scaler.jpg";
+import recipeScaler from "../../../assets/images/recipe-scaler.jpg";
 
 const heading = {
   span: "Recipe Scaler",

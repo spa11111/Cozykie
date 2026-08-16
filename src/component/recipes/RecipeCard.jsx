@@ -1,17 +1,14 @@
 import { NavLink, useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import { FiStar, FiArrowRight, FiShoppingBag } from "react-icons/fi";
 
 const formatNPR = (amount) =>
   `Rs. ${amount.toLocaleString("en-IN")}`;
 
-const getLoggedInUser = () => {
-  const savedUser = localStorage.getItem("cozykieUser");
-  return savedUser ? JSON.parse(savedUser) : null;
-};
-
 const RecipeCard = ({ recipe }) => {
   const navigate = useNavigate();
+  const user = useSelector((state) => state.auth.user);
 
   const {
     slug,
@@ -30,8 +27,6 @@ const RecipeCard = ({ recipe }) => {
   const isOutOfStock = stock === 0;
 
   const handleOrderNow = () => {
-    const user = getLoggedInUser();
-
     if (!user) {
       toast.info("Please log in to place an order.");
       navigate("/login");
