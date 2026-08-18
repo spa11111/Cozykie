@@ -45,7 +45,7 @@ const PageNotFound = () => {
               className="inline-flex items-center justify-center gap-2 text-sm font-semibold text-primary border border-primary/40 rounded-full px-6 py-3 hover:bg-accent hover:text-white transition-colors duration-300 w-full sm:w-auto"
             >
               <FiArrowLeft size={15} />
-              Go Back
+              Back
             </button>
           </div>
         </div>
