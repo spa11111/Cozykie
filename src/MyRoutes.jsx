@@ -20,12 +20,12 @@ import EditRecipe from "./pages/user/recipe/EditRecipe";
 import YourRecipes from "./pages/user/recipe/YourRecipes";
 import AdminLayout from "./layout/AdminLayout";
 import AdminRoute from "./routes/AdminRoute";
-import AdminDashboard from "./pages/Admin/AdminDashboard";
-import AdminUsers from "./pages/Admin/AdminUsers";
-import AdminCollections from "./pages/Admin/AdminCollections";
-import AdminOrders from "./pages/Admin/AdminOrders";
-import AdminRecipes from "./pages/Admin/AdminRecipes";
-import AdminProfile from "./pages/Admin/AdminProfile";
+import AdminDashboard from "./pages/admin/AdminDashboard";
+import AdminUsers from "./pages/admin/AdminUsers";
+import AdminCollections from "./pages/admin/AdminCollections";
+import AdminOrders from "./pages/admin/AdminOrders";
+import AdminRecipes from "./pages/admin/AdminRecipes";
+import AdminProfile from "./pages/admin/AdminProfile";
 
 const MyRoutes = () => {
   return (
