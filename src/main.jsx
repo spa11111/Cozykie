@@ -21,6 +21,7 @@ createRoot(document.getElementById("root")).render(
             closeOnClick
             pauseOnHover
             theme="light"
+            hideProgressBar={true}
           />
         </BrowserRouter>
       </PersistGate>

@@ -53,8 +53,7 @@ const AdminOrders = () => {
     <div>
       <div className="flex items-center justify-between mb-8">
         <h1
-          className="text-3xl font-bold text-primary"
-          style={{ fontFamily: "'Cormorant Garamond', serif" }}
+          className="text-3xl font-semibold text-primary"
         >
           Orders
         </h1>
@@ -63,14 +62,14 @@ const AdminOrders = () => {
           onClick={() =>
             setSortOrder((prev) => (prev === "newest" ? "oldest" : "newest"))
           }
-          className="inline-flex items-center gap-2 text-sm font-medium text-primary border border-border rounded-full px-4 py-2.5 hover:border-accent hover:text-accent transition-colors"
+          className="inline-flex items-center gap-2 text-sm font-medium text-primary border bg-light-bg border-border rounded-full px-4 py-2.5 hover:border-accent hover:text-accent transition-colors"
         >
           {sortOrder === "newest" ? <FiArrowDown size={14} /> : <FiArrowUp size={14} />}
           {sortOrder === "newest" ? "Newest first" : "Oldest first"}
         </button>
       </div>
 
-      <div className="bg-white border border-border rounded-2xl overflow-hidden">
+      <div className="bg-white border border-border rounded-lg overflow-hidden">
         <table className="w-full text-sm">
           <thead>
             <tr className="border-b border-border text-left text-text">
@@ -106,7 +105,7 @@ const AdminOrders = () => {
                 <td className="px-5 py-3 text-right">
                   <button
                     onClick={() => openReport(o)}
-                    className="inline-flex items-center gap-1.5 text-xs font-medium text-text border border-border rounded-full px-3 py-1.5 hover:border-red-400 hover:text-red-500 transition-colors"
+                    className="inline-flex items-center gap-1.5 text-xs font-medium text-text border border-border rounded-full px-3 py-1.5 hover:border-primary hover:text-primary transition-colors"
                   >
                     <FiFlag size={12} />
                     Report
@@ -138,7 +137,7 @@ const AdminOrders = () => {
             <button
               type="submit"
               disabled={submitting}
-              className="w-full text-sm font-semibold text-white bg-red-500 rounded-full px-6 py-3 hover:bg-red-600 transition-colors disabled:opacity-60"
+              className="w-full text-sm font-semibold text-white bg-primary rounded-full px-6 py-3 hover:bg-accent transition-colors disabled:opacity-60"
             >
               {submitting ? "Flagging..." : "Flag for Review"}
             </button>

@@ -55,22 +55,21 @@ const AdminUsers = () => {
     <div>
       <div className="flex items-center justify-between mb-8">
         <h1
-          className="text-3xl font-bold text-primary"
-          style={{ fontFamily: "'Cormorant Garamond', serif" }}
+          className="text-3xl font-semibold text-primary"
         >
           Users
         </h1>
 
         <button
           onClick={() => setSortOrder((prev) => (prev === "az" ? "za" : "az"))}
-          className="inline-flex items-center gap-2 text-sm font-medium text-primary border border-border rounded-full px-4 py-2.5 hover:border-accent hover:text-accent transition-colors"
+          className="inline-flex items-center gap-2 text-sm font-medium bg-light-bg text-primary border border-border rounded-full px-4 py-2.5 hover:border-accent hover:text-accent transition-colors"
         >
           {sortOrder === "az" ? <FiArrowDown size={14} /> : <FiArrowUp size={14} />}
           {sortOrder === "az" ? "A – Z" : "Z – A"}
         </button>
       </div>
 
-      <div className="bg-white border border-border rounded-2xl overflow-hidden">
+      <div className="bg-white border border-border rounded-lg overflow-hidden">
         <table className="w-full text-sm">
           <thead>
             <tr className="border-b border-border text-left text-text">
@@ -95,7 +94,7 @@ const AdminUsers = () => {
                   </span>
                 </td>
                 <td className="px-5 py-3 text-right space-x-3">
-                  <button onClick={() => openEdit(u)} className="text-text hover:text-accent">
+                  <button onClick={() => openEdit(u)} className="text-text hover:text-hover">
                     <FiEdit2 size={14} className="inline" />
                   </button>
                   <button onClick={() => setDeleteTarget(u)} className="text-text hover:text-red-500">

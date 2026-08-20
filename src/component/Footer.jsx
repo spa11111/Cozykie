@@ -65,25 +65,25 @@ const Footer = () => {
 
             <ul className="flex flex-col gap-3">
               <li>
-                <NavLink to="/fresh" className={linkClass}>
+                <NavLink to="/recipes" className={linkClass}>
                   Recipes
                 </NavLink>
               </li>
 
               <li>
-                <NavLink to="/recipes" className={linkClass}>
+                <NavLink to="/collections" className={linkClass}>
                   Collections
                 </NavLink>
               </li>
 
               <li>
-                <NavLink to="/favorites" className={linkClass}>
+                <NavLink to="/journal" className={linkClass}>
                   Kitchen Journal
                 </NavLink>
               </li>
 
               <li>
-                <NavLink to="/chewy-soft" className={linkClass}>
+                <NavLink to="/about" className={linkClass}>
                   About Us
                 </NavLink>
               </li>
@@ -99,7 +99,7 @@ const Footer = () => {
             <ul className="flex flex-col gap-3">
               <li>
                 <NavLink
-                  to="/tools/pantry-substitutions"
+                  to="/tools/scaler"
                   className={linkClass}
                 >
                   Recipe Scaler
@@ -107,14 +107,14 @@ const Footer = () => {
               </li>
 
               <li>
-                <NavLink to="/journal" className={linkClass}>
+                <NavLink to="/converter" className={linkClass}>
                   Measurement Converter
                 </NavLink>
               </li>
 
               <li>
                 <NavLink
-                  to="/tools/batch-scaler"
+                  to="/tools/substitution"
                   className={linkClass}
                 >
                   Pantry Substitutions
@@ -123,7 +123,7 @@ const Footer = () => {
 
               <li>
                 <NavLink
-                  to="/tools/oven-temp-converter"
+                  to="contact"
                   className={linkClass}
                 >
                   Contact Us

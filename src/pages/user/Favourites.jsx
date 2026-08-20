@@ -1,8 +1,61 @@
+import { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { NavLink } from "react-router-dom";
-import { FiHeart } from "react-icons/fi";
+import { FiHeart, FiStar, FiImage } from "react-icons/fi";
 import { toggleFavorite } from "../../redux/actions/favorites.actions";
 import UserLayout from "../../layout/UserLayout";
+
+const FavoriteCard = ({ recipe, onRemove }) => {
+  const [imgError, setImgError] = useState(false);
+
+  return (
+    <div className="bg-white rounded-2xl overflow-hidden border border-border group relative hover:shadow-lg hover:-translate-y-0.5 transition-all duration-300">
+      <NavLink to={`/recipes/${recipe.slug}`}>
+        <div className="relative w-full aspect-square bg-primary/5">
+          {!imgError && recipe.image ? (
+            <img
+              src={recipe.image}
+              alt={recipe.name}
+              onError={() => setImgError(true)}
+              className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+            />
+          ) : (
+            <div className="w-full h-full flex flex-col items-center justify-center text-primary/30">
+              <FiImage size={28} className="mb-1" />
+              <span className="text-xs">No image</span>
+            </div>
+          )}
+
+          {recipe.badge && (
+            <span className="absolute top-3 left-3 text-xs font-medium bg-white/90 text-primary px-3 py-1 rounded-full">
+              {recipe.badge}
+            </span>
+          )}
+        </div>
+      </NavLink>
+
+      <button
+        onClick={onRemove}
+        className="absolute top-3 right-3 w-8 h-8 rounded-full bg-white/90 flex items-center justify-center hover:bg-white transition-colors"
+        aria-label="Remove from favorites"
+      >
+        <FiHeart size={15} className="fill-primary text-primary" />
+      </button>
+
+      <div className="p-5">
+        <h3
+          className="text-lg font-semibold text-primary mb-1"
+          style={{ fontFamily: "'Cormorant Garamond', serif" }}
+        >
+          {recipe.name}
+        </h3>
+        <p className="text-sm text-text line-clamp-2 mb-3">
+          {recipe.description}
+        </p>
+      </div>
+    </div>
+  );
+};
 
 const Favourites = () => {
   const dispatch = useDispatch();
@@ -47,38 +100,11 @@ const Favourites = () => {
         ) : (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
             {favorites.map((recipe) => (
-              <div
+              <FavoriteCard
                 key={recipe.slug}
-                className="bg-white rounded-2xl overflow-hidden border border-border group relative"
-              >
-                <NavLink to={`/recipes/${recipe.slug}`}>
-                  <img
-                    src={recipe.image}
-                    alt={recipe.name}
-                    className="w-full h-48 object-cover"
-                  />
-                </NavLink>
-
-                <button
-                  onClick={() => dispatch(toggleFavorite(user.id, recipe))}
-                  className="absolute top-3 right-3 w-8 h-8 rounded-full bg-white/90 flex items-center justify-center hover:bg-white transition-colors"
-                  aria-label="Remove from favorites"
-                >
-                  <FiHeart size={15} className="fill-primary text-primary" />
-                </button>
-
-                <div className="p-5">
-                  <h3
-                    className="text-lg font-semibold text-primary mb-1"
-                    style={{ fontFamily: "'Cormorant Garamond', serif" }}
-                  >
-                    {recipe.name}
-                  </h3>
-                  <p className="text-sm text-text line-clamp-2">
-                    {recipe.description}
-                  </p>
-                </div>
-              </div>
+                recipe={recipe}
+                onRemove={() => dispatch(toggleFavorite(user.id, recipe))}
+              />
             ))}
           </div>
         )}

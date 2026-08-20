@@ -13,19 +13,19 @@ const tools = [
     icon: FiSliders,
     name: "Recipe Scaler",
     desc: "Adjust any recipe up or down to the exact batch size you need.",
-    to: "/tools/recipe-scaler",
+    to: "/tools/scaler",
   },
   {
     icon: FiRepeat,
     name: "Measurement Converter",
     desc: "Switch between cups, grams, and ounces without doing the math.",
-    to: "/tools/measurement-converter",
+    to: "/tools/converter",
   },
   {
     icon: FiPackage,
     name: "Pantry Substitutions",
     desc: "Find the right swap when you're missing an ingredient.",
-    to: "/tools/pantry-substitutions",
+    to: "/tools/substitution",
   },
 ];
 

@@ -184,28 +184,28 @@ const Header = () => {
 
                     <button
                       onClick={() => navigate("/profile")}
-                      className="w-full px-5 py-3 text-left text-sm text-primary transition hover:bg-hover"
+                      className="w-full px-5 py-3 text-left text-sm text-primary transition hover:text-accent hover:font-semibold"
                     >
                       Profile
                     </button>
 
                     <button
                       onClick={() => navigate("/favourite")}
-                      className="w-full px-5 py-3 text-left text-sm text-primary transition hover:bg-hover"
+                      className="w-full px-5 py-3 text-left text-sm text-primary transition hover:text-accent hover:font-semibold"
                     >
                       Favourites
                     </button>
 
                     <button
                       onClick={() => navigate("/journal")}
-                      className="w-full px-5 py-3 text-left text-sm text-primary transition hover:bg-hover"
+                      className="w-full px-5 py-3 text-left text-sm text-primary transition hover:text-accent hover:font-semibold"
                     >
                       Journal
                     </button>
 
                     <button
                       onClick={() => setShowLogoutConfirm(true)}
-                      className="w-full flex items-center gap-2 px-5 py-3 text-left text-sm text-primary transition hover:bg-hover"
+                      className="w-full flex items-center gap-2 px-5 py-3 text-left text-sm text-primary transition hover:text-accent hover:font-semibold"
                     >
                       Log out
                     </button>

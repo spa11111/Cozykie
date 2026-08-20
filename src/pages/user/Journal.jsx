@@ -16,6 +16,8 @@ import {
 import Modal from "../../component/Modal";
 import ConfirmDialog from "../../component/ConfirmDialog";
 import UserLayout from "../../layout/UserLayout";
+import Login from "../auth/Login";
+
 
 const emptyForm = { title: "", note: "", recipe: "", rating: "", isPublic: false };
 
@@ -106,16 +108,7 @@ const Journal = () => {
 
   if (!user) {
     return (
-      <UserLayout>
-        <section className="bg-light-bg px-6 sm:px-10 lg:px-16 xl:px-24 2xl:px-32 py-24 text-center">
-          <h1
-            className="text-3xl font-bold text-primary mb-3"
-            style={{ fontFamily: "'Cormorant Garamond', serif" }}
-          >
-            Log in to see your journal
-          </h1>
-        </section>
-      </UserLayout>
+      <Login />
     );
   }
 
@@ -231,47 +224,71 @@ const Journal = () => {
         )}
       </section>
 
-      {showForm && (
+            {showForm && (
         <Modal title={editingId ? "Edit Entry" : "New Entry"} onClose={() => setShowForm(false)}>
           <form onSubmit={handleSubmit} className="space-y-4">
-            <input
-              type="text"
-              name="title"
-              value={formData.title}
-              onChange={handleChange}
-              placeholder="Entry title"
-              className="w-full border border-border rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-1 focus:ring-accent"
-              required
-            />
+            <div>
+              <label htmlFor="title" className="block text-sm font-semibold text-primary mb-2">
+                Title
+              </label>
+              <input
+                id="title"
+                type="text"
+                name="title"
+                value={formData.title}
+                onChange={handleChange}
+                placeholder="Entry title"
+                className="w-full border border-border rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-1 focus:ring-accent"
+                required
+              />
+            </div>
 
-            <textarea
-              name="note"
-              value={formData.note}
-              onChange={handleChange}
-              placeholder="What did you learn or try?"
-              rows={4}
-              className="w-full border border-border rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-1 focus:ring-accent"
-              required
-            />
+            <div>
+              <label htmlFor="note" className="block text-sm font-semibold text-primary mb-2">
+                Note
+              </label>
+              <textarea
+                id="note"
+                name="note"
+                value={formData.note}
+                onChange={handleChange}
+                placeholder="What did you learn or try?"
+                rows={4}
+                className="w-full border border-border rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-1 focus:ring-accent"
+                required
+              />
+            </div>
 
             <div className="flex gap-4">
-              <input
-                type="text"
-                name="recipe"
-                value={formData.recipe}
-                onChange={handleChange}
-                placeholder="Recipe (optional)"
-                className="w-full border border-border rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-1 focus:ring-accent"
-              />
+              <div className="w-full">
+                <label htmlFor="recipe" className="block text-sm font-semibold text-primary mb-2">
+                  Recipe
+                </label>
+                <input
+                  id="recipe"
+                  type="text"
+                  name="recipe"
+                  value={formData.recipe}
+                  onChange={handleChange}
+                  placeholder="Optional"
+                  className="w-full border border-border rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-1 focus:ring-accent"
+                />
+              </div>
 
-              <input
-                type="text"
-                name="rating"
-                value={formData.rating}
-                onChange={handleChange}
-                placeholder="Rating (e.g. 5/5 Batch)"
-                className="w-full border border-border rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-1 focus:ring-accent"
-              />
+              <div className="w-full">
+                <label htmlFor="rating" className="block text-sm font-semibold text-primary mb-2">
+                  Rating
+                </label>
+                <input
+                  id="rating"
+                  type="text"
+                  name="rating"
+                  value={formData.rating}
+                  onChange={handleChange}
+                  placeholder="e.g. 5/5 Batch"
+                  className="w-full border border-border rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-1 focus:ring-accent"
+                />
+              </div>
             </div>
 
             <label className="flex items-center gap-2 text-sm text-text cursor-pointer select-none">

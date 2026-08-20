@@ -6,6 +6,8 @@ import {
 import ConfirmDialog from "../component/ConfirmDialog";
 import { logout } from "../redux/actions/auth.actions";
 import { useState } from "react";
+import logo from "../assets/images/logo.png";
+
 
 const navItems = [
   { to: "/admin", label: "Dashboard", icon: FiGrid, end: true },
@@ -29,14 +31,15 @@ const AdminLayout = () => {
   const [showLogoutConfirm, setShowLogoutConfirm] = useState(false);
 
   return (
-    <div className="flex min-h-screen bg-light-bg">
+    <div className="flex min-h-screen bg-dark-bg">
       <aside className="w-64 bg-white border-r border-border flex flex-col p-6">
-        <h1
-          className="text-2xl font-bold text-primary mb-10"
-          style={{ fontFamily: "'Cormorant Garamond', serif" }}
-        >
-          Cozykie
-        </h1>
+      <NavLink to="/">
+            <img
+              src={logo}
+              alt="Cozykie"
+              className="w-16 object-contain sm:w-20 mb-3"
+            />
+          </NavLink>
 
         <nav className="flex-1 space-y-1">
           {navItems.map(({ to, label, icon: Icon, end }) => (
@@ -63,7 +66,7 @@ const AdminLayout = () => {
           <p className="text-xs text-text mb-3">{user?.email}</p>
           <button
   onClick={() => setShowLogoutConfirm(true)}
-  className="flex items-center gap-2 text-sm font-medium text-red-500 hover:text-red-600 transition-colors"
+  className="flex items-center gap-2 text-sm font-medium text-primary hover:text-accent transition-colors"
 >
   <FiLogOut size={14} />
   Log out

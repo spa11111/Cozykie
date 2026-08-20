@@ -1,7 +1,6 @@
 import React from 'react'
 import { toast } from 'react-toastify';
 import UserLayout from '../../layout/UserLayout';
-import { data } from '../../staticData/Home';
 import axios from 'axios';
 import Hero from '../../component/Hero';
 import BrowseByCategory from '../../component/HomeSection/BrowseByCategory';

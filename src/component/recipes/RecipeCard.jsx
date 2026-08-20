@@ -3,8 +3,10 @@ import { useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import { FiStar, FiArrowRight, FiShoppingBag } from "react-icons/fi";
 
-const formatNPR = (amount) =>
-  `Rs. ${amount.toLocaleString("en-IN")}`;
+const formatNPR = (value) => {
+  if (value === null || value === undefined) return null;
+  return `NPR ${value.toLocaleString()}`;
+};
 
 const RecipeCard = ({ recipe }) => {
   const navigate = useNavigate();

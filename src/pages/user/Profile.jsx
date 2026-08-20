@@ -198,7 +198,7 @@ const confirmDeleteRecipe = async () => {
             {/* RIGHT — Stats + activity */}
             <div className="space-y-6">
               {/* Stat strip */}
-              <div className="bg-white border border-border rounded-3xl px-6 py-5 grid grid-cols-3 divide-x divide-border">
+              <div className="bg-none text-primary border border-border rounded-3xl px-6 py-5 grid grid-cols-3 divide-x divide-border">
                 <NavLink
                   to="/favourite"
                   className="flex flex-col items-center gap-1 hover:opacity-70 transition-opacity px-2"
@@ -315,38 +315,42 @@ const confirmDeleteRecipe = async () => {
                   </div>
                 )}
               </div>
-
-              {/* Recent Favorites */}
-              {favorites.length > 0 && (
-                <div className="bg-white border border-border rounded-3xl p-6">
-                  <div className="flex items-center justify-between mb-5">
-                    <h2 className="text-lg font-bold text-primary">
-                      Recent Favorites
-                    </h2>
-                    <NavLink
-                      to="/favourite"
-                      className="text-xs font-semibold text-accent hover:underline"
-                    >
-                      View all
-                    </NavLink>
-                  </div>
-                  <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
-                    {favorites.slice(0, 4).map((recipe) => (
-                      <NavLink
-                        key={recipe.slug}
-                        to={`/recipes/${recipe.slug}`}
-                        className="rounded-2xl overflow-hidden border border-border"
-                      >
-                        <img
-                          src={recipe.image}
-                          alt={recipe.name}
-                          className="w-full h-24 object-cover"
-                        />
-                      </NavLink>
-                    ))}
-                  </div>
-                </div>
-              )}
+{/* Recent Favorites */}
+{favorites.length > 0 && (
+  <div className="bg-white border border-border rounded-3xl p-6">
+    <div className="flex items-center justify-between mb-5">
+      <h2 className="text-lg font-bold text-primary">
+        Recent Favorites
+      </h2>
+      <NavLink
+        to="/favourite"
+        className="text-xs font-semibold text-accent hover:underline"
+      >
+        View all
+      </NavLink>
+    </div>
+    <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+      {favorites.slice(0, 4).map((recipe) => (
+        <NavLink
+          key={recipe.slug}
+          to={`/recipes/${recipe.slug}`}
+          className="rounded-2xl overflow-hidden border border-border block group"
+        >
+          <div className="w-full aspect-square bg-primary/5 overflow-hidden">
+            <img
+              src={recipe.image}
+              alt={recipe.name}
+              onError={(e) => {
+                e.currentTarget.style.display = "none";
+              }}
+              className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+            />
+          </div>
+        </NavLink>
+      ))}
+    </div>
+  </div>
+)}
 
               {/* Recent Journal Entries */}
               {journalEntries.length > 0 && (

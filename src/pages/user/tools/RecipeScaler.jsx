@@ -114,7 +114,7 @@ const RecipeScaler = () => {
 
           {/* Tool Card */}
           <ToolCard
-            title="Recipe Card"
+            title="Recipe Scaler"
             actionText="Scale Recipe"
             onAction={handleScale}
           >
@@ -234,7 +234,7 @@ const RecipeScaler = () => {
 
           {/* Updated Ingredients */}
           {scaledIngredients && (
-            <div className="mt-6 w-full rounded-3xl border border-border bg-white p-8 shadow-sm sm:p-10 lg:p-12">
+            <div className="mx-auto mt-6 max-w-7xl rounded-3xl border border-border bg-white p-8 shadow-sm sm:p-10">
               <h2
                 className="mb-8 text-center text-2xl font-semibold text-primary sm:text-3xl"
                 style={{

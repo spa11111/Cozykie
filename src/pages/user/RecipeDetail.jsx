@@ -14,6 +14,12 @@ const getTotalTime = (prepTime, bakeTime) => {
   return `${parse(prepTime) + parse(bakeTime)} min`;
 };
 
+const Eyebrow = ({ children }) => (
+  <span className="text-xs uppercase tracking-[3px] font-semibold text-accent">
+    {children}
+  </span>
+);
+
 const RecipeDetail = () => {
   const { slug } = useParams();
   const [recipe, setRecipe] = useState(null);
@@ -39,9 +45,6 @@ const RecipeDetail = () => {
   }, [slug]);
 
   useEffect(() => {
-    // Guard: only fetch variants when this recipe actually belongs
-    // to a cookieType group. Most recipes don't have one, and calling
-    // the API with `undefined` was returning/matching the wrong recipes.
     if (!recipe || !recipe.cookieType) {
       setVariantRecipes([]);
       return;
@@ -97,8 +100,8 @@ const RecipeDetail = () => {
 
   return (
     <UserLayout>
-      <div className="bg-light-bg">
-        <div className="max-w-6xl mx-auto px-6 sm:px-10 lg:px-16 xl:px-24 2xl:px-32 py-10 lg:py-14">
+      <section className="bg-light-bg px-6 py-16 sm:px-10 lg:px-16 xl:px-24 2xl:px-32">
+        <div className="max-w-6xl mx-auto">
 
           {/* Hero */}
           <div className="mb-12">
@@ -106,7 +109,7 @@ const RecipeDetail = () => {
           </div>
 
           {/* Quick Info */}
-          <div className="mb-16">
+          <div className="mb-16  border border-border bg-dark-bg">
             <RecipeMeta
               prepTime={recipe.prepTime}
               bakeTime={recipe.bakeTime}
@@ -117,9 +120,10 @@ const RecipeDetail = () => {
           </div>
 
           {/* About */}
-          <div className="mb-16 max-w-3xl">
+          <div className="mb-16 max-w-6xl">
+            <Eyebrow>The Story</Eyebrow>
             <h2
-              className="text-2xl font-bold text-primary mb-4"
+              className="text-2xl font-bold text-primary mt-1 mb-4"
               style={{ fontFamily: "'Cormorant Garamond', serif" }}
             >
               About This Recipe
@@ -133,25 +137,38 @@ const RecipeDetail = () => {
           </div>
 
           {/* Ingredients + Instructions */}
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-10 mb-16">
-            <div className="lg:col-span-1">
-              <IngredientsList ingredients={recipe.ingredients} />
-            </div>
-            <div className="lg:col-span-2">
-              <RecipeInstructions instructions={recipe.instructions} />
+          <div className="mb-16">
+            <Eyebrow>How It's Made</Eyebrow>
+            <h2
+              className="text-2xl font-bold text-primary mt-1 mb-6"
+              style={{ fontFamily: "'Cormorant Garamond', serif" }}
+            >
+              Ingredients &amp; Method
+            </h2>
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-10">
+              <div className="lg:col-span-1 bg-white border border-border rounded-2xl p-6">
+                <IngredientsList ingredients={recipe.ingredients} />
+              </div>
+              <div className="lg:col-span-2 bg-white border border-border rounded-2xl p-6">
+                <RecipeInstructions instructions={recipe.instructions} />
+              </div>
             </div>
           </div>
 
           {/* Baking Tips */}
-          <div className="mb-16">
-            <BakingTips tips={recipe.tips} />
+          <div className="mb-16 bg-accent/5 border border-accent/20 rounded-2xl p-6 sm:p-8">
+            <Eyebrow>From the Baker</Eyebrow>
+            <div className="mt-1">
+              <BakingTips tips={recipe.tips} />
+            </div>
           </div>
 
           {/* Same Cookie, Different Authors */}
           {variantRecipes.length > 0 && (
-            <div>
+            <div className="bg-white border border-border rounded-2xl p-6 sm:p-8">
+              <Eyebrow>Community Bakes</Eyebrow>
               <h2
-                className="text-2xl font-bold text-primary mb-2"
+                className="text-2xl font-bold text-primary mt-1 mb-2"
                 style={{ fontFamily: "'Cormorant Garamond', serif" }}
               >
                 Other Takes on {recipe.name}
@@ -173,7 +190,7 @@ const RecipeDetail = () => {
           )}
 
         </div>
-      </div>
+      </section>
     </UserLayout>
   );
 };

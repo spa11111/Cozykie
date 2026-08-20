@@ -46,7 +46,7 @@ const RecipeOverview = ({ recipe }) => {
   return (
     <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-14">
       {/* Image */}
-      <div className="rounded-3xl overflow-hidden h-72 sm:h-96 lg:h-full">
+      <div className="rounded-3xl overflow-hidden h-60 sm:h-96 lg:h-[520px]">
         <img
           src={recipe.image}
           alt={recipe.name}
@@ -87,8 +87,6 @@ const RecipeOverview = ({ recipe }) => {
         </p>
 
         <div className="flex flex-wrap items-center gap-2 text-sm text-text mb-4">
-          <FiStar className="fill-accent text-accent" size={16} />
-          <span className="font-semibold text-primary">{recipe.rating}</span>
           <span>•</span>
           <span>{recipe.time}</span>
           <span>•</span>

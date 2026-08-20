@@ -3,7 +3,7 @@ import logo from "../assets/images/logo.png";
 
 const AuthLayout = ({ heading, children }) => {
   return (
-    <section className="min-h-screen bg-light-bg px-4 py-10 sm:px-6 sm:py-12 lg:px-10">
+    <section className="min-h-screen flex items-center justify-center bg-light-bg px-4 py-10 sm:px-6 sm:py-12 lg:px-10">
       <div className="mx-auto w-full max-w-md rounded-3xl bg-white p-6 shadow-sm sm:p-8 lg:p-10">
 
         {/* Logo */}

@@ -49,7 +49,7 @@ const Hero = () => {
           </p>
 
           <NavLink
-            to="/recipe"
+            to="/recipes"
             className="inline-flex items-center rounded-full bg-accent px-7 py-3.5 font-semibold text-white transition hover:bg-primary"
           >
             Browse Recipes

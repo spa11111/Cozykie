@@ -2,15 +2,17 @@ import { useState, useEffect } from "react";
 import { toast } from "react-toastify";
 import { FiTrash2, FiEdit2, FiArrowUp, FiArrowDown, FiPlus } from "react-icons/fi";
 import {
-  getCollections, createCollection, updateCollection, deleteCollection,
+  getCollections, createCollection, updateCollection, deleteCollection, getAllRecipesAdmin,
 } from "../../services/api";
 import Modal from "../../component/Modal";
 import ConfirmDialog from "../../component/ConfirmDialog";
+import ImagePicker from "../../component/ImagePicker";
 
-const emptyForm = { name: "", tag: "", description: "", recipeCount: 0, image: "" };
+const emptyForm = { name: "", tag: "", description: "", image: "" };
 
 const AdminCollections = () => {
   const [collections, setCollections] = useState([]);
+  const [recipes, setRecipes] = useState([]);
   const [showForm, setShowForm] = useState(false);
   const [editingId, setEditingId] = useState(null);
   const [formData, setFormData] = useState(emptyForm);
@@ -18,8 +20,13 @@ const AdminCollections = () => {
   const [sortOrder, setSortOrder] = useState("az");
 
   useEffect(() => {
-    getCollections().then(setCollections);
+    Promise.all([getCollections(), getAllRecipesAdmin()]).then(([c, r]) => {
+      setCollections(c);
+      setRecipes(r);
+    });
   }, []);
+
+  const countForTag = (tag) => recipes.filter((r) => r.category === tag).length;
 
   const handleChange = (e) => {
     setFormData((p) => ({ ...p, [e.target.name]: e.target.value }));
@@ -33,13 +40,13 @@ const AdminCollections = () => {
 
   const openEdit = (c) => {
     setEditingId(c.id);
-    setFormData({ name: c.name, tag: c.tag, description: c.description, recipeCount: c.recipeCount, image: c.image });
+    setFormData({ name: c.name, tag: c.tag, description: c.description, image: c.image });
     setShowForm(true);
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const payload = { ...formData, recipeCount: Number(formData.recipeCount) };
+    const payload = { ...formData, recipeCount: countForTag(formData.tag) };
 
     if (editingId) {
       const updated = await updateCollection(editingId, payload);
@@ -73,15 +80,14 @@ const AdminCollections = () => {
     <div>
       <div className="flex items-center justify-between mb-8">
         <h1
-          className="text-3xl font-bold text-primary"
-          style={{ fontFamily: "'Cormorant Garamond', serif" }}
+          className="text-3xl font-semibold text-primary"
         >
           Collections
         </h1>
         <div className="flex items-center gap-3">
           <button
             onClick={() => setSortOrder((prev) => (prev === "az" ? "za" : "az"))}
-            className="inline-flex items-center gap-2 text-sm font-medium text-primary border border-border rounded-full px-4 py-2.5 hover:border-accent hover:text-accent transition-colors"
+            className="inline-flex items-center gap-2 text-sm font-medium bg-light-bg text-primary border border-border rounded-full px-4 py-2.5 hover:border-accent hover:text-accent transition-colors"
           >
             {sortOrder === "az" ? <FiArrowDown size={14} /> : <FiArrowUp size={14} />}
             {sortOrder === "az" ? "A – Z" : "Z – A"}
@@ -102,17 +108,17 @@ const AdminCollections = () => {
             <img src={c.image} alt={c.name} className="w-full h-32 object-cover" />
             <div className="p-4">
               <h3 className="font-semibold text-primary">{c.name}</h3>
-              <p className="text-xs text-text mt-1">{c.recipeCount} recipes</p>
+              <p className="text-xs text-text mt-1">{countForTag(c.tag)} recipes</p>
               <div className="flex gap-2 mt-3">
                 <button
                   onClick={() => openEdit(c)}
-                  className="inline-flex items-center gap-1.5 text-xs font-medium text-primary border border-border rounded-full px-3 py-1.5 hover:border-accent hover:text-accent transition-colors"
+                  className="inline-flex items-center gap-1.5 text-xs font-medium text-primary border border-border rounded-full px-3 py-1.5 hover:bg-accent/70 hover:text-white transition-colors"
                 >
                   <FiEdit2 size={11} /> Edit
                 </button>
                 <button
                   onClick={() => setDeleteTarget(c)}
-                  className="inline-flex items-center gap-1.5 text-xs font-medium text-text border border-border rounded-full px-3 py-1.5 hover:border-red-400 hover:text-red-500 transition-colors"
+                  className="inline-flex items-center gap-1.5 text-xs font-medium text-text border border-border rounded-full px-3 py-1.5  hover:bg-primary hover:text-white transition-colors"
                 >
                   <FiTrash2 size={11} /> Delete
                 </button>
@@ -158,25 +164,20 @@ const AdminCollections = () => {
               />
             </div>
 
-            <div>
-              <label className="block text-sm font-semibold text-primary mb-2">
-                Image URL
-              </label>
-              <input
-                name="image" value={formData.image} onChange={handleChange}
-                placeholder="/images/collection.jpg" required
-                className="w-full border border-border rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:ring-1 focus:ring-accent"
-              />
-            </div>
+            <ImagePicker name="image" value={formData.image} onChange={handleChange} label="Image" />
 
             <div>
               <label className="block text-sm font-semibold text-primary mb-2">
                 Recipe Count
               </label>
-              <input
-                type="number" name="recipeCount" value={formData.recipeCount} onChange={handleChange}
-                className="w-full border border-border rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:ring-1 focus:ring-accent"
-              />
+              <div className="w-full border border-border rounded-xl px-4 py-2.5 text-sm bg-primary/5 text-text">
+                {formData.tag
+                  ? `${countForTag(formData.tag)} recipe${countForTag(formData.tag) === 1 ? "" : "s"} tagged "${formData.tag}"`
+                  : "Set a tag to see the count"}
+              </div>
+              <p className="text-xs text-text/50 mt-1.5">
+                Calculated automatically from recipes — not editable.
+              </p>
             </div>
 
             <button
