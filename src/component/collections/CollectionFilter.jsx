@@ -11,7 +11,7 @@ const CollectionFilter = ({ filters, activeFilter, onChange }) => {
             className={`whitespace-nowrap text-sm font-semibold px-5 py-2.5 rounded-full transition-colors duration-300 ${
               isActive
                 ? "bg-primary text-white"
-                : "bg-tag-bg text-primary hover:bg-accent-bg"
+                : "bg-tag-bg hover:text-white hover:bg-accent"
             }`}
           >
             {filter}
