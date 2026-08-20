@@ -21,7 +21,7 @@ import AdminLayout from "./layout/AdminLayout";
 import AdminRoute from "./routes/AdminRoute";
 import AdminDashboard from "./pages/admin/AdminDashboard";
 import AdminUsers from "./pages/admin/AdminUsers";
-import AdminCollections from "./pages/admin/AdminCollections";
+import AdminCollections from "./pages/admin/AdminCollections"; 
 import AdminOrders from "./pages/admin/AdminOrders";
 import AdminRecipes from "./pages/admin/AdminRecipes";
 import AdminProfile from "./pages/admin/AdminProfile";
